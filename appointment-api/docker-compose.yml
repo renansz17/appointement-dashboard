@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: appointmentDashboard-app
+    ports:
+      - "8000:8000"
+    environment:
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - APP_KEY=
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - mysql
+    command: php artisan serve --host=0.0.0.0 --port=8000
+
+  mysql:
+    image: mysql:8.0
+    container_name: appointmentDashboard-mysql
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: appointment_dashboard
+      MYSQL_USER: appointment_dashboard
+      MYSQL_PASSWORD: appointment_dashboard
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+volumes:
+  mysql-data:
